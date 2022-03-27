@@ -1,0 +1,121 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./card.css">
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+
+    const Board = () => {
+
+      const fronts = ["💩", "👹", "👿", "🚗", "💎", "😁", "⚽", "🌓"];
+      
+      // Array.prototype.concat() para generar el par del imojis
+      const deck = fronts
+      .concat(fronts)
+      .sort(() => Math.random() - 0.5)
+      .map((f) => ({ content: f, faceUp: false }));
+
+      const [firstCard, setFirstCard] = React.useState(null);
+      const [count, setCount] = React.useState(0);
+      const [attempts, setAttempts] = React.useState(0);
+      const [decks, setDecks] = React.useState(deck);
+
+      const flipCardTo = (cardIndex) => {
+        decks.map((deck, index) => {
+          if (index === cardIndex) {
+            deck.faceUp = !deck.faceUp;
+          }
+        });
+      };
+
+      const flipCard = (cardIndex) => {
+        if (firstCard === null) {
+          setFirstCard(cardIndex);
+        } else {
+          const firstCardContent = decks[firstCard].content;
+          const secondCardContent = decks[cardIndex].content;
+
+          if (firstCardContent === secondCardContent) {
+            setFirstCard(null);
+            setAttempts((prevAttempts) => prevAttempts + 1);
+          
+            if (count < 8) { 
+              setTimeout(()=> match.play(), 300);
+            }
+          } else {
+            setAttempts((prevAttempts) => prevAttempts + 1);
+            // Flips the card back to normal
+            setTimeout(() => {
+              flipCardTo(firstCard);
+              flipCardTo(cardIndex);
+              setFirstCard(null);
+              }, 700);
+            }
+          }
+
+        flipCardTo(cardIndex);
+      };
+
+      return (
+        <div
+          style={{display: "grid", gridTemplateColumns: "50% 50%", height: "100vh", gridTemplateRows: "1", background: "#01070A"}}>
+          <div style={{display: "grid", gridTemplateColumns: "120px 120px 120px 120px", columnGap: "14px"}}>
+            {decks.map((deck, index) => (
+            <Card key={index} content={deck.content} faceUp={deck.faceUp} flip={()=> flipCard(index)} />
+              ))}
+          </div>
+          <Scoreboard attempts={attempts} />
+        </div>
+      )
+    }
+
+    const Card = ({ content, faceUp, flip }) => {
+      return (
+        <div className={`card ${faceUp ? "face-up" : null} `} onClick={flip}>
+          {faceUp ? content : "?"}
+        </div>
+      );
+    };
+
+
+    const Scoreboard = ({attempts}) => {
+      return (
+        <div>
+          <div style={{color: "white"}}>{attempts}</div>
+          <GitHubScreen />
+        </div>
+
+      )
+    }
+
+    const GitHubScreen = () => {
+      return (
+        <div>
+          Github</div>
+      )
+    }
+
+    const App = () => {
+        return (
+          <div className="App">
+            <div style={{display: "grid", gridTemplateColumns: "100%", height: "100vh", background: "#01070A"}}>
+              <Board />
+            </div>
+          </div>
+        )
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'))
+    </script>
+
+</body>
+
+</html>

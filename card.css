@@ -1,0 +1,26 @@
+.card {
+    width: 120px;
+    height: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(30px);
+    box-shadow: 10px 10px 10px rgba(45, 55, 68, 0.0.3);
+    border-radius: 8px;
+    font-size: 4.5em;
+    color: #ffffff;
+    font-weight: 500;
+    transition: transform 0.8s;
+    z-index: 1;
+}
+
+.face-up {
+    transform: rotateY(180deg);
+    /* background-color: #1daef7; */
+    background-color: rgba(29, 174, 247, 0.3);
+    backdrop-filter: blur(30px);
+    cursor: default;
+    pointer-events: none;
+}
